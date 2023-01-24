@@ -1,0 +1,62 @@
+<p-toast></p-toast>
+<button pButton pRipple label="Nova despesa" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="abrirNovaDespesa()" style="margin-bottom: 10px;"></button>
+<p-table [value]="despesas" [tableStyle]="{'min-width': '60rem'}">
+  <ng-template pTemplate="caption">
+    <div class="flex align-items-center justify-content-between">
+        Despesas
+    </div>
+</ng-template>
+<ng-template pTemplate="header">
+    <tr>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th>Preço</th>
+        <th></th>
+    </tr>
+</ng-template>
+<ng-template pTemplate="body" let-despesa>
+    <tr>
+        <td>{{despesa.despesa}}</td>
+        <td>{{despesa.descricao}}</td>
+        <td>{{despesa.preco  | currency:'BRL'}}</td>
+        <td>
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editarDespesa(despesa)"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deletarDespesa(despesa)"></button>
+      </td>
+    </tr>
+</ng-template>
+<ng-template pTemplate="summary">
+    <div class="flex align-items-center justify-content-between">
+        No total tem {{despesas ? despesas.length : 0 }} despesas.
+    </div>
+</ng-template>
+</p-table>
+
+<p-dialog [(visible)]="despesaDialog" [style]="{width: '450px'}" header="Deatalhes da Despesa" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+      <div class="p-field">
+          <label for="name">Nome</label>
+          <input type="text" pInputText id="nome" [(ngModel)]="despesa.despesa" />
+          <small class="p-invalid" *ngIf="submitted && !despesa.despesa">Name is required.</small>
+      </div>
+      <div class="p-field">
+          <label for="descricao">Descrição</label>
+          <textarea id="descricao" pInputTextarea [(ngModel)]="despesa.descricao" required rows="3" cols="20"></textarea>
+      </div>
+
+      <div class="p-formgrid p-grid">
+          <div class="p-field p-col">
+              <label for="preco">Preço</label>
+              <p-inputNumber id="preco" [(ngModel)]="despesa.preco" mode="currency" currency="BRL" locale="pt-BR"></p-inputNumber>
+          </div>
+      </div>
+
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="fecharDialog()"></button>
+      <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text" (click)="salvarDespesa()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
